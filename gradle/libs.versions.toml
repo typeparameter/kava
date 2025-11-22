@@ -1,12 +1,12 @@
 [versions]
-detekt = "1.23.7"
-dokka = "1.9.20"
+detekt = "1.23.8"
+dokka = "2.1.0"
 guice = "7.0.0"
 jakarta-inject = "2.0.1"
-junit = "5.11.1"
-kotlin = "2.0.20"
-ktlint-gradle = "12.1.1"
-mockk = "1.13.12"
+junit = "5.14.1"
+kotlin = "2.2.21"
+ktlint-gradle = "14.0.1"
+mockk = "1.14.6"
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

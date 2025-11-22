@@ -1,13 +1,4 @@
-import org.jetbrains.dokka.base.DokkaBase
-import org.jetbrains.dokka.base.DokkaBaseConfiguration
-import org.jetbrains.dokka.gradle.DokkaTask
 import java.time.LocalDate
-
-buildscript {
-    dependencies {
-        classpath(libs.dokka.base)
-    }
-}
 
 plugins {
     id("maven-publish")
@@ -83,33 +74,31 @@ publishing {
     }
 }
 
-tasks.withType<DokkaTask>().configureEach {
+dokka {
     moduleName.set(projectName)
 
-    dokkaSourceSets.configureEach {
-        pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-            footerMessage = "© $copyrightRange Drew Davis"
-        }
-
+    dokkaSourceSets.main {
         sourceLink {
             localDirectory.set(rootDir)
-            remoteUrl.set(uri("$githubRepositoryUrl/tree/v${project.version}").toURL())
+            remoteUrl("$githubRepositoryUrl/tree/v${project.version}")
             remoteLineSuffix.set("#L")
         }
 
-        externalDocumentationLink {
+        externalDocumentationLinks.register("guice") {
             val guiceJavadocUri = "https://google.github.io/guice/api-docs/${libs.versions.guice.get()}/javadoc"
-            url.set(uri(guiceJavadocUri).toURL())
-
-            // Required until Dokka supports the new element-list standard
-            packageListUrl.set(uri("$guiceJavadocUri/element-list").toURL())
+            url(guiceJavadocUri)
+            packageListUrl("$guiceJavadocUri/element-list")
         }
+    }
+
+    pluginsConfiguration.html {
+        footerMessage = "© $copyrightRange Drew Davis"
     }
 }
 
 tasks.replace("javadocJar", Jar::class).apply {
-    dependsOn(tasks.dokkaHtml)
-    from(tasks.dokkaHtml.flatMap { it.outputDirectory })
+    dependsOn(tasks.dokkaGenerateHtml)
+    from(layout.buildDirectory.dir("dokka/html"))
     archiveClassifier.set("javadoc")
 }
 

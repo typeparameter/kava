@@ -10,6 +10,4 @@ import kotlin.reflect.KClass
  * Rather than passing a Java [Class] (using Class::class.java syntax),
  * one can instead use the Kotlin [KClass] directly (using Class::class syntax).
  */
-fun <T : Any> Injector.getInstance(type: KClass<T>): T {
-    return this.getInstance(type.java)
-}
+fun <T : Any> Injector.getInstance(type: KClass<T>): T = this.getInstance(type.java)
