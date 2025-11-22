@@ -32,6 +32,10 @@ subprojects {
         }
     }
 
+    ktlint {
+        version = "1.8.0"
+    }
+
     tasks.named<Test>("test") {
         useJUnitPlatform()
         finalizedBy("jacocoTestReport")
